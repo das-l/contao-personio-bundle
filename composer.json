@@ -10,6 +10,10 @@
         },
         {
             "name": "christian.wederka@lumturo.net"
+        },
+        {
+            "name": "Alex Wuttke",
+            "email": "alw@qbus.de"
         }
     ],
     "require": {

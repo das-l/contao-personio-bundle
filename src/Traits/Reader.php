@@ -2,6 +2,9 @@
 
 namespace LumturoNet\ContaoPersonioBundle\Traits;
 
+use Contao\Config;
+use Contao\System;
+use InvalidArgumentException;
 use LumturoNet\ContaoPersonioBundle\Helpers;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -17,10 +20,21 @@ trait Reader
      */
     private function getXml()
     {
-        $objCache = new FilesystemAdapter;
+        try {
+            $cacheDir = System::getContainer()->getParameter('kernel.cache_dir');
+        }
+        catch (InvalidArgumentException $objException) {
+            $cacheDir = '';
+        }
+
+        $objCache = new FilesystemAdapter('contao_personio', 0, $cacheDir);
 
         return $objCache->get('jobs', function(ItemInterface $objItem) {
-            $objItem->expiresAfter(86400);
+            $cacheTime = 86400;
+            if (($cacheTimeConfig = Config::get('personio_cache_time')) !== '') {
+                $cacheTime = $cacheTimeConfig;
+            }
+            $objItem->expiresAfter($cacheTime);
 
             $objXml  = simplexml_load_file($this->strWsUrl, 'SimpleXMLElement', LIBXML_NOCDATA);
             $strJson = json_encode($objXml);
