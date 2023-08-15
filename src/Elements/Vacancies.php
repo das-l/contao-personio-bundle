@@ -21,8 +21,6 @@ class Vacancies extends ContentElement
     private $intVacancyId  = null;
     protected $strTemplate = 'lt_personio_vacancies';
 
-    protected $strWsUrl = null;
-
     public function __construct($objContainer, $strColumn)
     {
         parent::__construct($objContainer, $strColumn);
@@ -76,6 +74,16 @@ class Vacancies extends ContentElement
             $strDetailpage = $strDetailpage ?? Controller::replaceInsertTags('{{page::alias}}');
 
             $arrVacancies = !empty($this->personio_company) ? $this->getVacanciesByCompany($this->personio_company) : $this->getVacancies();
+
+            if ($this->personio_company) {
+                $arrVacancies = $this->getVacanciesByCompany($this->personio_company);
+            }
+            elseif ($this->personio_recruiting_category) {
+                $arrVacancies = $this->getVacanciesByRecruitingCategory($this->personio_recruiting_category);
+            }
+            else {
+                $arrVacancies = $this->getVacancies();
+            }
 
             if ($arrVacancies === false) {
                 $this->Template->connectionError = true;

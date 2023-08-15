@@ -5,14 +5,14 @@ namespace LumturoNet\ContaoPersonioBundle\Classes;
 use LumturoNet\ContaoPersonioBundle\Helpers;
 use LumturoNet\ContaoPersonioBundle\Traits\Reader;
 
-class Company
+class RecruitingCategory
 {
     use Reader;
 
-    public function getCompaniesAsOptions()
+    public function getRecruitingCategoriesAsOptions()
     {
         $arrVacancies = $this->getXml();
 
-        return array_values(array_unique(Helpers::array_pluck($arrVacancies, 'subcompany')));
+        return array_values(array_unique(Helpers::array_pluck($arrVacancies, 'recruitingCategory')));
     }
 }

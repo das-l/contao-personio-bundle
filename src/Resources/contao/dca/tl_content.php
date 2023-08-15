@@ -1,9 +1,23 @@
 <?php
 $GLOBALS['TL_DCA']['tl_content']['fields']['personio_company'] = [
-    'label'      => ['Firma', 'Wählen Sie hier eine Firma, von der Stellenangebote ausgegben werden sollen.'],
+    'label'      => ['Firma', 'Wählen Sie hier eine Firma, von der Stellenangebote ausgegeben werden sollen.'],
     'exclude'    => true,
     'inputType'  => 'select',
     'options_callback'    => ['LumturoNet\ContaoPersonioBundle\Classes\Company', 'getCompaniesAsOptions'],
+    'eval'       => array
+    (
+        'mandatory'          => false,
+        'includeBlankOption' => true,
+        'tl_class'           => 'clr'
+    ),
+    'sql'        => "varchar(255) NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['personio_recruiting_category'] = [
+    'label'      => ['Recruiting-Kategorie', 'Wählen Sie hier eine Recruiting-Kategorie, aus der Stellenangebote ausgegeben werden sollen.'],
+    'exclude'    => true,
+    'inputType'  => 'select',
+    'options_callback'    => ['LumturoNet\ContaoPersonioBundle\Classes\RecruitingCategory', 'getRecruitingCategoriesAsOptions'],
     'eval'       => array
     (
         'mandatory'          => false,
@@ -26,6 +40,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['personio_vacancy_detailpage'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['personio_vacancies'] =
-    '{type_legend},type,personio_company,personio_vacancy_detailpage;' .
+    '{type_legend},type,personio_company,personio_recruiting_category,personio_vacancy_detailpage;' .
     '{expert_legend:hide},cssID;' .
     '{invisible_legend:hide},invisible';

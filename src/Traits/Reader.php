@@ -15,11 +15,17 @@ use Symfony\Contracts\Cache\ItemInterface;
  */
 trait Reader
 {
+    protected $strWsUrl = null;
+
     /**
      * @return mixed
      */
     private function getXml()
     {
+        if ($this->strWsUrl === null) {
+            $this->strWsUrl = Config::get('personio_webservice_url');
+        }
+
         try {
             $cacheDir = System::getContainer()->getParameter('kernel.cache_dir');
         }
@@ -80,9 +86,28 @@ trait Reader
 
     /**
      * @param $strCompany
-     * @return array
+     * @return array|false
      */
-    public function getVacanciesByCompany($strCompany): array
+    public function getVacanciesByCompany($strCompany)
+    {
+        return $this->getVacanciesByFieldValue('subcompany', $strCompany);
+    }
+
+    /**
+     * @param $strCompany
+     * @return array|false
+     */
+    public function getVacanciesByRecruitingCategory($strRecruitingCategory)
+    {
+        return $this->getVacanciesByFieldValue('recruitingCategory', $strRecruitingCategory);
+    }
+
+    /**
+     * @param $strField
+     * @param $strValue
+     * @return array|false
+     */
+    public function getVacanciesByFieldValue($strField, $strValue)
     {
         $arrData = $this->getXml();
 
@@ -92,7 +117,7 @@ trait Reader
 
         $arrVacancies = [];
         foreach($arrData as $intIndex => $arrVacancy) {
-            if($arrVacancy['subcompany'] == $strCompany) $arrVacancies[] = $arrVacancy;
+            if($arrVacancy[$strField] == $strValue) $arrVacancies[] = $arrVacancy;
         }
 
         return $arrVacancies;
