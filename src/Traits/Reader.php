@@ -37,6 +37,11 @@ trait Reader
             $objItem->expiresAfter($cacheTime);
 
             $objXml  = simplexml_load_file($this->strWsUrl, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+            if ($objXml === false) {
+                return false;
+            }
+
             $strJson = json_encode($objXml);
             $arrPositions = json_decode($strJson, true)['position'];
             // Only one position
@@ -63,6 +68,11 @@ trait Reader
     public function getVacancyById($intId)
     {
         $arrData = $this->getXml();
+
+        if ($arrData === false) {
+            return false;
+        }
+
         $intSearchKey = array_search($intId, Helpers::array_pluck($arrData, 'id'));
 
         return $arrData[$intSearchKey]['id'] == $intId ? $arrData[$intSearchKey] : null;
@@ -74,7 +84,12 @@ trait Reader
      */
     public function getVacanciesByCompany($strCompany): array
     {
-        $arrData      = $this->getXml();
+        $arrData = $this->getXml();
+
+        if ($arrData === false) {
+            return false;
+        }
+
         $arrVacancies = [];
         foreach($arrData as $intIndex => $arrVacancy) {
             if($arrVacancy['subcompany'] == $strCompany) $arrVacancies[] = $arrVacancy;

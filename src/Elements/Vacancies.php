@@ -65,11 +65,23 @@ class Vacancies extends ContentElement
 
             $this->Template          = new FrontendTemplate('lt_personio_vacancy');
             $this->Template->vacancy = $arrVacancy;
+
+            if ($arrVacancy === false) {
+                $this->Template->connectionError = true;
+
+                return;
+            }
         } else {
             $strDetailpage = PageModel::findById($this->personio_vacancy_detailpage)->alias;
             $strDetailpage = $strDetailpage ?? Controller::replaceInsertTags('{{page::alias}}');
 
             $arrVacancies = !empty($this->personio_company) ? $this->getVacanciesByCompany($this->personio_company) : $this->getVacancies();
+
+            if ($arrVacancies === false) {
+                $this->Template->connectionError = true;
+
+                return;
+            }
 
             try {
                 $strSuffix = System::getContainer()->getParameter('contao.url_suffix');

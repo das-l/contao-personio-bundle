@@ -29,5 +29,11 @@ if(!empty($this->vacancies)): ?>
 <?php endforeach; ?>
 
 <?php else: ?>
-<h1>Es sind keine Jobangebote vorhanden.</h1>
+<h1>
+  <?php if ($this->connectionError): ?>
+    Jobangebote konnten nicht vom Job-Server geladen werden.
+  <?php else: ?>
+    Es sind keine Jobangebote vorhanden.
+  <?php endif; ?>
+</h1>
 <?php endif; ?>
