@@ -39,7 +39,7 @@ class Vacancies extends ContentElement
 
         // Set the item from the auto_item parameter
         if (!isset($_GET['item']) && Config::get('useAutoItem') && isset($_GET['auto_item'])) {
-            preg_match('/(\d{6})/', Input::get('auto_item'), $matches);
+            preg_match('/(\d{6,})/', Input::get('auto_item'), $matches);
             $this->intVacancyId = $matches[0] ?? null;
 
             Input::setGet('item', Input::get('auto_item'));
