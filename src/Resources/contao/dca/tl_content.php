@@ -39,7 +39,19 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['personio_vacancy_detailpage'] = [
     'sql'        => "int(10) unsigned NOT NULL default 0"
 ];
 
+$GLOBALS['TL_DCA']['tl_content']['fields']['personio_jumpTo'] = [
+    'label'      => ['Weiterleitungsseite', 'Wählen Sie hier eine Seite aus, auf die nach Absenden des Bewerbungsformular weitergeleitet werden soll.'],
+    'exclude'    => true,
+    'inputType'  => 'pageTree',
+    'eval'       => array
+    (
+        'mandatory' => false,
+        'tl_class'  => 'clr'
+    ),
+    'sql'        => "int(10) unsigned NOT NULL default 0"
+];
+
 $GLOBALS['TL_DCA']['tl_content']['palettes']['personio_vacancies'] =
-    '{type_legend},type,personio_company,personio_recruiting_category,personio_vacancy_detailpage;' .
+    '{type_legend},type,personio_company,personio_recruiting_category,personio_vacancy_detailpage,personio_jumpTo;' .
     '{expert_legend:hide},cssID;' .
     '{invisible_legend:hide},invisible';

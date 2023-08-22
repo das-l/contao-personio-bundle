@@ -27,5 +27,12 @@ class ContaoPersonioExtension extends Extension
         );
 
         $loader->load('services.yml');
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $mergedConfig);
+
+        foreach (['recruiting_form', 'recruiting_company_id', 'recruiting_api_token'] as $parameter) {
+            $container->setParameter('contao_personio.'.$parameter, $config[$parameter]);
+        }
     }
 }

@@ -20,3 +20,5 @@
 <strong><?= $this->vacancy['occupation']; ?></strong><br>
 <strong><?= $this->vacancy['occupationCategory']; ?></strong><br>
 <strong><?= date_create($this->vacancy['createdAt'])->format('d.m.Y'); ?></strong><br>
+
+<div class="ce_form"><?= $this->form ?></div>
