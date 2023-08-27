@@ -66,7 +66,10 @@ class Vacancies extends ContentElement
 
             $GLOBALS['personio']['ogContent'] = $arrVacancy;
 
+            $templateData = $this->Template->getData();
+
             $this->Template          = new FrontendTemplate('lt_personio_vacancy');
+            $this->Template->setData($templateData);
             $this->Template->vacancy = $arrVacancy;
 
             if ($arrVacancy === false) {
