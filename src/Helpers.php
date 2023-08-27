@@ -2,6 +2,8 @@
 
 namespace LumturoNet\ContaoPersonioBundle;
 
+use Contao\System;
+
 class Helpers
 {
     public static function array_pluck($array, $value = null, $key = null)
@@ -30,16 +32,12 @@ class Helpers
         return $results;
     }
 
-    public static function slug($str, $replace = [], $delimiter = '-') {
-        if ( !empty($replace) ) {
-            $str = str_replace((array)$replace, ' ', $str);
-        }
+    public static function slug($str) {
+        $slug = System::getContainer()->get('contao.slug');
 
-        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
-        $clean = strtolower(trim($clean, '-'));
-        $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
-
-        return $clean;
+        return $slug->generate(
+            $str,
+            $GLOBALS['objPage']->id
+        );
     }
 }
