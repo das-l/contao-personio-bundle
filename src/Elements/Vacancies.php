@@ -235,7 +235,7 @@ class Vacancies extends ContentElement
                 else {
                     if ($this->personio_jumpTo) {
                         $jumpTo = PageModel::findByPk($this->personio_jumpTo);
-                        throw new RedirectResponseException($jumpTo->getFrontendUrl());
+                        throw new RedirectResponseException('/'.$jumpTo->getFrontendUrl());
                     }
                 }
             }
