@@ -106,7 +106,7 @@ class Vacancies extends ContentElement
                     $inputType = 'text';
                     $options = null;
                     // TODO: Should be config
-                    switch ($defaultField) {
+                    switch ($systemField) {
                         case 'birthday':
                             $inputType = 'date';
                             break;
