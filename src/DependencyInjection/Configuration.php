@@ -62,6 +62,10 @@ class Configuration implements ConfigurationInterface
                         'cv'
                     ])
                 ->end()
+                ->arrayNode('field_order')
+                    ->scalarPrototype()->end()
+                    ->defaultValue([])
+                ->end()
             ->end()
         ;
     }

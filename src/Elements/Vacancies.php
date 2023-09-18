@@ -85,14 +85,16 @@ class Vacancies extends ContentElement
                 'eval' => ['text' => '']
             ]);
 
+            $fields = [];
+
             $defaultFields = ['first_name', 'last_name', 'email', 'message'];
             foreach ($defaultFields as $defaultField) {
-                $form->addFormField($defaultField, [
+                $fields[$defaultField] = [
                     'label' => $GLOBALS['TL_LANG']['MSC']['personio_form_'.$defaultField],
                     // TODO: Should be config
                     'inputType' => ($defaultField === 'message' ? 'textarea' : 'text'),
                     'eval' => [ 'mandatory' => (in_array($defaultField, ['first_name', 'last_name', 'email']) ? true : false) ]
-                ]);
+                ];
             }
 
             try {
@@ -115,26 +117,34 @@ class Vacancies extends ContentElement
                             $options = ['male' => 'Männlich', 'female' => 'Weiblich', 'diverse' => 'Divers', 'undefined' => 'Unbestimmt'];
                             break;
                     }
-                    $form->addFormField($systemField, [
+                    $fields[$systemField] = [
                         'label' => $GLOBALS['TL_LANG']['MSC']['personio_form_'.$systemField],
                         'inputType' => $inputType,
                         'options' => $options
-                    ]);
+                    ];
                 }
                 if (isset($formConfig['custom_fields']) && is_array($formConfig['custom_fields']) && count($formConfig['custom_fields']) > 0) {
                     foreach ($formConfig['custom_fields'] as $customField) {
-                        $form->addFormField($customField['attribute_id'], $customField['field_config']);
+                        $fields[$customField['attribute_id']] = $customField['field_config'];
                     }
                 }
                 if (isset($formConfig['file_fields']) && is_array($formConfig['file_fields']) && count($formConfig['file_fields']) > 0) {
                     foreach ($formConfig['file_fields'] as $fileField) {
-                        $form->addFormField($fileField, [
+                        $fields[$fileField] = [
                             'label' => $GLOBALS['TL_LANG']['MSC']['personio_form_'.$fileField],
                             'inputType' => 'upload',
                             'eval' => [ 'mandatory' => ($fileField === 'cv'), 'extensions' => 'jpg,jpeg,png,tif,tiff,pdf,doc,docx' ]
-                        ]);
+                        ];
                     }
                 }
+            }
+
+            if (isset($formConfig['field_order']) && is_array($formConfig['field_order']) && count($formConfig['field_order']) > 0) {
+                $fields = array_merge(array_flip($formConfig['field_order']), $fields);
+            }
+
+            foreach ($fields as $fieldName => $fieldConfig) {
+                $form->addFormField($fieldName, $fieldConfig);
             }
 
             $form->addSubmitFormField('Absenden');
