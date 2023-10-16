@@ -162,13 +162,28 @@ class Vacancies extends ContentElement
                     $companyId = null;
                 }
 
+                try {
+                    $initPhase = System::getContainer()->getParameter('contao_personio.recruiting_init_phase');
+                } catch (InvalidArgumentException $objException) {
+                    $initPhase = null;
+                }
+
                 $client = HttpClient::create();
+
+                $phaseType = 'system';
+                $phaseId = 'unassigned';
+                if ($initPhase) {
+                    $phaseId = $initPhase;
+                    if (!in_array($phaseId, ['unassigned', 'rejected', 'withdrawn', 'offer', 'accepted'])) {
+                        $phaseType = 'custom';
+                    }
+                }
 
                 $formData = $form->fetchAll();
                 $requestData = [
                     'phase' => [
-                        'type' => 'system',
-                        'id' => 'unassigned'
+                        'type' => $phaseType,
+                        'id' => $phaseId
                     ],
                     'job_position_id' => $this->intVacancyId,
                     'attributes' => [],

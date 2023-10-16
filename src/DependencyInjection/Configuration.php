@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->addRecruitingFormNode())
                 ->scalarNode('recruiting_company_id')->defaultNull()->end()
                 ->scalarNode('recruiting_api_token')->defaultNull()->end()
+                ->scalarNode('recruiting_init_phase')->defaultNull()->end()
             ->end()
         ;
 
